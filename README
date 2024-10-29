@@ -1,0 +1,110 @@
+Inventory Management System API
+This project is a Django-based Inventory Management System API that enables admin users to manage inventory items, stock levels, and view reports. Regular users have view-only access to products. The API is built with Django REST Framework (DRF) and supports JSON-based CRUD operations for product and stock management.
+
+Table of Contents
+Features
+Installation
+Configuration
+Usage
+API Endpoints
+Testing
+Features
+Authentication: User authentication with role-based access (admin, regular user).
+Product Management: Admin users can create, read, update, and delete products.
+Stock Management: Allows stock adjustments with logging for tracking inventory changes.
+Stock Alerts: Low-stock alerts when inventory falls below a threshold.
+Reporting: Admin-only reporting, showing total inventory value, sorted product stock, and filtered views.
+Exception Handling: Detailed error handling for better debugging and reliability.
+Installation
+Clone the repository:
+
+
+git clone https://github.com/yourusername/inventory-management.git
+cd inventory-management
+Set up a virtual environment:
+
+python3 -m venv venv
+source venv/bin/activate
+Install dependencies:
+
+
+pip install -r requirements.txt
+Run migrations:
+
+python manage.py migrate
+Create a superuser for admin access:
+
+
+python manage.py createsuperuser
+Run the server:
+
+python manage.py runserver
+The application will be accessible at http://127.0.0.1:8000/.
+
+
+Usage
+Access the Django admin interface at http://127.0.0.1:8000/admin/ for managing products, categories, and users.
+Use API endpoints to manage products, stock levels, and retrieve reports.
+Admin users have full access, while regular users have view-only access to products.
+API Endpoints
+Endpoint	Method	Description	Permissions
+/api/auth/register/	POST	Register a new user	Public
+/api/auth/login/	POST	Login to obtain token	Public
+/api/products/	GET	List all products	Authenticated
+/api/products/	POST	Add a new product	Admin only
+/api/products/<pk>/	GET	Retrieve product details	Authenticated
+/api/products/<pk>/	PUT	Update product details	Admin only
+/api/products/<pk>/	DELETE	Delete a product	Admin only
+/api/stock/	POST	Add/remove stock for a product	Admin only
+/api/reporting/	GET	View inventory reports (total value, sorted, filtered)	Admin only
+Sample JSON Requests
+Register User (POST /api/auth/register/):
+
+json
+Copy code
+{
+  "username": "testuser",
+  "password": "testpass",
+  "email": "testuser@example.com"
+}
+Login User (POST /api/auth/login/):
+
+json
+Copy code
+{
+  "username": "testuser",
+  "password": "testpass"
+}
+Add Product (POST /api/products/):
+
+json
+Copy code
+{
+  "name": "Sample Product",
+  "description": "Sample description",
+  "sku": "SP001",
+  "quantity": 10,
+  "price": 50.0,
+  "category": 1,
+  "supplier": 1
+}
+Adjust Stock (POST /api/stock/):
+
+json
+Copy code
+{
+  "product_id": 1,
+  "quantity": 5,
+  "action": "add",
+  "reason": "New stock received"
+}
+Reporting (GET /api/reporting/?sort=asc&category=1):
+
+Returns total inventory value, product list sorted by stock level, with optional filters.
+Testing
+To run tests, use:
+
+bash
+Copy code
+python manage.py test
+This will execute all unit tests for the application.
